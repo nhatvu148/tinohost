@@ -1,10 +1,16 @@
-import { intl } from 'containers/LanguageProviderContainer';
+/* eslint-disable no-plusplus */
+/* eslint-disable radix */
+/* eslint-disable consistent-return */
+// TODO: Fix eslint
+
 import {
   KEY_CODES,
   MAX_LENGTH,
   MAX_SALARY,
   SSN_WEIGHT,
 } from 'constants/common';
+
+import { intl } from 'containers/LanguageProviderContainer';
 
 const REGEX_PASSWORD = /^(?!.*(\w)\1{2,})(?=.*[A-Za-z])(?=.*\d)(?=.*[-@#$!%*#?&(\\/)^_+|~=`{}\\[\]:";'<>?,.])[A-Za-z\d\\\-@#$!%*#?&(\\/)^_+|~=`{}\\[\]:";'<>?,.].{7,19}$/;
 const REGEX_DUPLICATE = /^(?!.*(\w)\1{2,}).+$/;
@@ -15,39 +21,36 @@ export const passwordValidator = async (rule, value) => {
   if (value) {
     if (REGEX_PASSWORD.test(value) && REGEX_DUPLICATE.test(value)) {
       return Promise.resolve();
-    } else {
-      if (REGEX_DUPLICATE.test(value)) {
-        return Promise.reject(
-          intl.formatMessage({
-            id: 'common.form.validate.regexMessage',
-          }),
-        );
-      } else {
-        return Promise.reject(
-          intl.formatMessage({
-            id: 'common.form.validate.regexDuplicateChar',
-          }),
-        );
-      }
     }
-  } else {
+    if (REGEX_DUPLICATE.test(value)) {
+      return Promise.reject(
+        intl.formatMessage({
+          id: 'common.form.validate.regexMessage',
+        }),
+      );
+    }
     return Promise.reject(
-      intl.formatMessage(
-        {
-          id: 'common.error.noInput',
-        },
-        {
-          field: intl.formatMessage({
-            id: `common.form.field.label.${rule.field}`,
-          }),
-        },
-      ),
+      intl.formatMessage({
+        id: 'common.form.validate.regexDuplicateChar',
+      }),
     );
   }
+  return Promise.reject(
+    intl.formatMessage(
+      {
+        id: 'common.error.noInput',
+      },
+      {
+        field: intl.formatMessage({
+          id: `common.form.field.label.${rule.field}`,
+        }),
+      },
+    ),
+  );
 };
 
 export const customValidator = async (rule, value, callback) => {
-  const result = await callback(rule, value); //return boolean
+  const result = await callback(rule, value); // return boolean
   if (result) return Promise.resolve();
 
   return Promise.reject(
@@ -114,17 +117,15 @@ export const isValidSSN = (ssn) => {
     bare[6] > 4
   ) {
     return false;
-  } else {
-    let tmp = 0;
-    for (let i = 0; i < bare.length - 1; i++) {
-      tmp += bare[i] * SSN_WEIGHT[i];
-    }
-    if (bare[bare.length - 1] === 11 - (tmp % 11)) {
-      return true;
-    } else {
-      return false;
-    }
   }
+  let tmp = 0;
+  for (let i = 0; i < bare.length - 1; i++) {
+    tmp += bare[i] * SSN_WEIGHT[i];
+  }
+  if (bare[bare.length - 1] === 11 - (tmp % 11)) {
+    return true;
+  }
+  return false;
 };
 
 export const emailValidator = async (value) => {

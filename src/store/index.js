@@ -1,7 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
-import createReducer from './rootReducer';
+
 import { createInjectorsEnhancer } from 'redux-injectors';
+
+import createReducer from './rootReducer';
 import rootSaga from './rootSaga';
 
 const createStore = () => {
@@ -30,7 +32,7 @@ const createStore = () => {
 
   const store = configureStore({
     reducer: createReducer(),
-    devTools: devTools,
+    devTools,
     middleware: [saga],
     enhancers: [injectorEnhancer],
   });

@@ -1,3 +1,5 @@
+import { SIGNIN_URL } from 'constants/routes';
+
 import {
   INVALID_SESSION,
   EXISTING_SESSION,
@@ -12,7 +14,6 @@ import {
   WARNING_TYPE,
 } from 'components/BasicComponents/Notification';
 import * as authHelper from 'helpers/authHelper';
-import { SIGNIN_URL } from 'constants/routes';
 import get from 'lodash/get';
 
 const ERROR_HANDLER = 'ERROR_HANDLER';

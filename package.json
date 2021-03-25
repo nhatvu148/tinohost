@@ -13,6 +13,7 @@
     "node-sass": "^5.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-intl": "^5.13.5",
     "react-redux": "^7.2.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
@@ -27,7 +28,13 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint --ignore-path .gitignore --fix --max-warnings=0"
+    "lint": "yarn lint:js && yarn lint:css",
+    "lint:css": "stylelint src/**/*.scss",
+    "lint:eslint": "eslint --ignore-path .gitignore",
+    "lint:eslint:fix": "eslint --ignore-path .gitignore --fix",
+    "lint:js": "yarn lint:eslint -- . ",
+    "lint:staged": "lint-staged",
+    "prettify": "prettier --write"
   },
   "eslintConfig": {
     "extends": [
@@ -53,6 +60,7 @@
     "eslint": "^7.22.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.1.0",
+    "eslint-import-resolver-webpack": "^0.13.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^3.3.1",
@@ -61,7 +69,10 @@
     "eslint-plugin-redux-saga": "^1.2.1",
     "husky": "^5.2.0",
     "lint-staged": "^10.5.4",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "stylelint": "^13.12.0",
+    "stylelint-config-sass-guidelines": "^8.0.0",
+    "stylelint-config-standard": "^21.0.0"
   },
   "husky": {
     "hooks": {
@@ -69,8 +80,13 @@
     }
   },
   "lint-staged": {
-    "(!(public/**/*.js))*.{js,jsx}": [
-      "yarn run lint"
+    "*.js": [
+      "yarn lint:eslint:fix",
+      "git add --force"
+    ],
+    "*.json": [
+      "prettier --write",
+      "git add --force"
     ]
   }
 }

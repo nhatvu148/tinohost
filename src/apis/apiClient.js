@@ -1,16 +1,23 @@
-import axios from 'axios';
+/* eslint-disable consistent-return */
+/* eslint-disable prefer-promise-reject-errors */
+/* eslint-disable no-throw-literal */
+// TODO: fix eslint
 import {
   BASE_API_URL,
   API_TIMEOUT,
   DOWNLOAD_FILE_TIMEOUT,
 } from 'constants/appConfig';
-import { ResponseHeader } from 'models/ResponseHeaderModel';
+
 import {
   ACCEPT_LANGUAGE_HEADER,
   NETWORK_ERROR,
   FILENAME_REGEX,
   FILE_EXTENSION_REGEX,
 } from 'constants/common';
+
+import axios from 'axios';
+import { ResponseHeader } from 'models/ResponseHeaderModel';
+
 import mime from 'mime-types';
 import unescape from 'lodash/unescape';
 
@@ -41,7 +48,7 @@ downloadClient.interceptors.response.use(
     const { headers, data } = response;
     if (headers['content-disposition']) {
       let filename = '';
-      let contentDisposition = headers['content-disposition'];
+      const contentDisposition = headers['content-disposition'];
 
       const matches = FILENAME_REGEX.exec(contentDisposition);
       if (matches !== null && matches[1]) {
@@ -58,20 +65,19 @@ downloadClient.interceptors.response.use(
         type: mimeType,
       });
       return { blob, filename };
-    } else {
-      await data.text().then((text) => {
-        const jsonData = JSON.parse(text);
-
-        const resHeader = ResponseHeader.toClass(jsonData.responseHeadVo);
-        const messageContent = resHeader?.messageContents;
-        const messageCode = resHeader?.messageCode;
-
-        // Use `unescape` Convert HTML entities
-        if (!resHeader.isSuccess) {
-          throw { messageContent: unescape(messageContent), messageCode };
-        }
-      });
     }
+    await data.text().then((text) => {
+      const jsonData = JSON.parse(text);
+
+      const resHeader = ResponseHeader.toClass(jsonData.responseHeadVo);
+      const messageContent = resHeader?.messageContents;
+      const messageCode = resHeader?.messageCode;
+
+      // Use `unescape` Convert HTML entities
+      if (!resHeader.isSuccess) {
+        throw { messageContent: unescape(messageContent), messageCode };
+      }
+    });
   },
   // Any status codes that falls outside the range of 2xx cause this function to trigger
   // Do something with response error
@@ -94,7 +100,7 @@ apiClient.interceptors.response.use(
     const resHeader = ResponseHeader.toClass(data.responseHeadVo);
     // Use `unescape` Convert HTML entities
     const messageContent = unescape(resHeader.messageContents);
-    const messageCode = resHeader.messageCode;
+    const { messageCode } = resHeader;
     if (resHeader.isSuccess) {
       return { headers, data, messageContent, messageCode };
     }
@@ -111,7 +117,8 @@ apiClient.interceptors.response.use(
             id: 'error.api.resourceNotFound',
           },
         });
-      } else if (status >= 500 && status <= 599) {
+      }
+      if (status >= 500 && status <= 599) {
         return Promise.reject({
           messageContent: {
             id: 'error.api.internalServerError',

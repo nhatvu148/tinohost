@@ -1,3 +1,15 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
+/* eslint-disable no-empty */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable indent */
+/* eslint-disable no-bitwise */
+/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax */
+// TODO: Fix eslint
+
+import { INPUT_MASK, YES, NO } from 'constants/common';
+
 import React from 'react';
 import dayjs from 'dayjs';
 import isEqual from 'lodash/isEqual';
@@ -6,7 +18,6 @@ import _isInteger from 'lodash/isInteger';
 import toNumber from 'lodash/toNumber';
 import flattenDeep from 'lodash/flattenDeep';
 import isArray from 'lodash/isArray';
-import { INPUT_MASK, YES, NO } from 'constants/common';
 
 import Select from 'components/BasicComponents/Select';
 import { Radio } from 'components/BasicComponents/RadioGroup';
@@ -36,7 +47,7 @@ export const convertToBlob = (object) =>
 
 export const convertToFormData = (data) => {
   const formData = new FormData();
-  for (let key in data) {
+  for (const key in data) {
     formData.append(key, data[key]);
   }
   return formData;
@@ -88,9 +99,9 @@ export const flattenArrayList = (menus) => {
 
   const flattened = [];
   menus.forEach((menu) => {
-    if (menu['children'].length > 0) {
+    if (menu.children.length > 0) {
       flattened.push({ ...menu });
-      flattened.push(flattenArrayList(menu['children']));
+      flattened.push(flattenArrayList(menu.children));
     } else {
       flattened.push({ ...menu });
     }
@@ -108,35 +119,31 @@ export const isInteger = (str) => _isInteger(toNumber(str));
 
 // This validator just return the first error field ( not all error fields )
 export const checkRequiredField = (fields, changedData) => {
-  for (let field of fields) {
+  for (const field of fields) {
     if (isArray(changedData)) {
-      for (let item of changedData) {
+      for (const item of changedData) {
         if (isBlank(item[field])) {
           return field;
         }
       }
-    } else {
-      if (isBlank(changedData[field])) {
-        return field;
-      }
+    } else if (isBlank(changedData[field])) {
+      return field;
     }
   }
 };
 
 // This validator all error fields
 export const checkRequiredFields = (fields, changedData) => {
-  let fieldsErr = [];
-  for (let field of fields) {
+  const fieldsErr = [];
+  for (const field of fields) {
     if (isArray(changedData)) {
-      for (let item of changedData) {
+      for (const item of changedData) {
         if (isBlank(item[field])) {
           fieldsErr.push(field);
         }
       }
-    } else {
-      if (isBlank(changedData[field])) {
-        fieldsErr.push(field);
-      }
+    } else if (isBlank(changedData[field])) {
+      fieldsErr.push(field);
     }
   }
 
@@ -246,9 +253,8 @@ export const handleChangeBgCell = (sheet, rows, fieldError) => {
     if (isBlank(row[fieldError])) {
       sheet.setErrorCell(sheet.getRowById(row.id), fieldError);
       return;
-    } else {
-      sheet.resetBackgroundCell(sheet.getRowById(row.id), fieldError);
     }
+    sheet.resetBackgroundCell(sheet.getRowById(row.id), fieldError);
   }
 };
 
@@ -350,7 +356,7 @@ export const formatFloat = (value, beforeDecimal, afterDecimal) => {
 };
 
 export const isColTypeNumber = (ibsheet, row, field) =>
-  ibsheet.getType(row, field) === ('Float' || 'Int') ? true : false;
+  ibsheet.getType(row, field) === ('Float' || 'Int');
 
 export const getValueObjByKeys = (obj, keys) => {
   if (!obj) return {};
@@ -395,7 +401,7 @@ export const findIBSheetRowByKeyValue = (sheet, keys = null, values = null) => {
 
 export const convertToSafeNullObject = (obj) => {
   const newObj = {};
-  for (let key in obj) {
+  for (const key in obj) {
     newObj[key] = obj[key] ?? '';
   }
   return newObj;
@@ -446,7 +452,6 @@ export const onlyNumberAndHyphen = (e) => {
       isCtrlCVA(e) ||
       isHyphen(e))
   ) {
-    return;
   } else {
     e.preventDefault();
   }
@@ -455,7 +460,6 @@ export const onlyNumberAndHyphen = (e) => {
 export const onlyNumber = (e) => {
   // allow only hyphen, numbers, ctrl C V A
   if (isBackspaceOrDelete(e) || isArrows(e) || isNumber(e) || isCtrlCVA(e)) {
-    return;
   } else {
     e.preventDefault();
   }
