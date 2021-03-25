@@ -5,17 +5,18 @@
  * this component connects the redux state language locale to the
  * IntlProvider component and i18n messages
  */
+
+import get from 'lodash/get';
+import dayjs from 'dayjs';
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useInjectReducer } from 'hooks/useInjector';
 import { createIntl, createIntlCache, IntlProvider } from 'react-intl';
 
-import { translationMessages, DEFAULT_LOCALE } from 'i18n';
-import get from 'lodash/get';
-import dayjs from 'dayjs';
-
 import { selectReducer, selectSliceName, initialState } from './slices';
+
+import { translationMessages, DEFAULT_LOCALE } from 'i18n';
 
 dayjs.locale(DEFAULT_LOCALE);
 // eslint-disable-next-line import/no-mutable-exports

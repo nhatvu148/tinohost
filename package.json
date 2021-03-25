@@ -79,13 +79,8 @@
     }
   },
   "lint-staged": {
-    "*.js": [
-      "yarn lint:eslint:fix",
-      "git add --force"
-    ],
-    "*.json": [
-      "prettier --write",
-      "git add --force"
+    "(!(public/**/*.js))*.{js,jsx}": [
+      "yarn lint"
     ]
   }
 }

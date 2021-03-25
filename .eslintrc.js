@@ -67,7 +67,7 @@ module.exports = {
     'max-len': 0,
     'newline-per-chained-call': 2,
     'no-confusing-arrow': 0,
-    'no-console': ['error', { allow: ['warn', 'error'] }],
+    'no-console': ['warn', { allow: ['warn', 'error'] }],
     'no-unused-vars': 2,
     'no-use-before-define': 0,
     'prefer-template': 2,

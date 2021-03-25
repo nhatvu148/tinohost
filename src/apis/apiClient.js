@@ -3,12 +3,6 @@
 /* eslint-disable no-throw-literal */
 // TODO: fix eslint
 import {
-  BASE_API_URL,
-  API_TIMEOUT,
-  DOWNLOAD_FILE_TIMEOUT,
-} from 'constants/appConfig';
-
-import {
   ACCEPT_LANGUAGE_HEADER,
   NETWORK_ERROR,
   FILENAME_REGEX,
@@ -21,6 +15,8 @@ import { ResponseHeader } from 'models/ResponseHeaderModel';
 import mime from 'mime-types';
 import unescape from 'lodash/unescape';
 
+import { BASE_API_URL, API_TIMEOUT } from 'constants/appConfig';
+
 const apiClient = axios.create({
   baseURL: BASE_API_URL,
   timeout: API_TIMEOUT,
@@ -32,7 +28,7 @@ const apiClient = axios.create({
 
 const downloadClient = axios.create({
   baseURL: BASE_API_URL,
-  timeout: DOWNLOAD_FILE_TIMEOUT,
+  timeout: API_TIMEOUT,
   responseType: 'blob',
 });
 

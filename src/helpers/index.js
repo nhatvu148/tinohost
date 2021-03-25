@@ -21,6 +21,7 @@ import isArray from 'lodash/isArray';
 
 import Select from 'components/BasicComponents/Select';
 import { Radio } from 'components/BasicComponents/RadioGroup';
+
 import { intl } from 'containers/LanguageProviderContainer';
 import {
   isNumber,
