@@ -1,20 +1,22 @@
 import { SIGNIN_URL } from 'constants/routes';
 
+import { put, takeLatest } from 'redux-saga/effects';
+import get from 'lodash/get';
+
 import {
   INVALID_SESSION,
   EXISTING_SESSION,
   INVALID_SESSION_TIMEOUT,
   HAVE_BEEN_KICKED_OUT,
 } from 'features/auth/LoginPage/constants';
-import { intl } from 'containers/LanguageProviderContainer';
-import { put, takeLatest } from 'redux-saga/effects';
 import { notificationActions } from 'containers/NotificationContainer/slices';
 import {
   ERROR_TYPE,
   WARNING_TYPE,
 } from 'components/BasicComponents/Notification';
+
 import * as authHelper from 'helpers/authHelper';
-import get from 'lodash/get';
+import { intl } from 'containers/LanguageProviderContainer';
 
 const ERROR_HANDLER = 'ERROR_HANDLER';
 
